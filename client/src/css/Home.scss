@@ -1,0 +1,126 @@
+@import "./variables.scss"; //Reset CSS
+@import "./main.scss"; //Reset CSS
+
+
+
+.title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.address {
+    margin-top: 10px;
+}
+
+
+.header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    color: white;
+    background: black;
+}
+
+
+.container__form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    margin: 0 auto;
+    padding: 4rem;
+    color: white;
+
+    &__sub {
+        width: 25rem;
+        background-color: #222;
+        padding: .5rem 3.5rem;
+        margin: 0 auto;
+        
+        p {
+            line-height: 1.4;
+            color: #fff;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+
+        form {
+            label {
+                line-height: 1.75em;
+                color: #fff;
+                margin-bottom: 0;
+                font-weight: lighter;
+                font-size: .8rem;
+            }
+
+            input {
+                padding: 0.65rem 3rem;
+                padding-left: 0.3rem;
+                background: #363636;
+                border: none;
+                border-radius: 2px;
+            }
+
+            fieldset {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+
+                label {
+                    margin-top: 1rem;
+                }
+            }
+
+            select {
+                padding: .5rem;
+                background: #363636;
+                border: none;
+                color: white;
+                font-weight: lighter;
+            }
+
+
+        }
+    }
+}
+
+
+.formLabelInput {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-bottom: 0.8rem;
+}
+
+.step {
+    text-align: right;
+    font-size: .9rem;
+}
+
+%inputSubmit {
+    font-family: $font;
+    font-weight: 200;
+    font-size: 1rem;
+    line-height: 1.1;
+    padding: .5rem 2rem;
+    border: 1px solid transparent;
+    border-radius: 3px;
+    background: $blue;
+    color: white;
+}
+
+#btnForm {
+    @extend %inputSubmit;
+}

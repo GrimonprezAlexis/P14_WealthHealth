@@ -1,61 +1,180 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from 'react-router-dom';
-import '../css/Home.css';
+import { useForm } from "react-hook-form";
+import { useHistory } from 'react-router-dom';
+
+import '../css/Home.scss';
 
 const Home = () => {
+    const [states,setStates] = useState([]);
+    const [step, setStep] = useState(1);
+    const history = useHistory();
+
+
+    const {
+        register,
+        handleSubmit,
+        formState: { errors }
+    } = useForm();
+
+
+    const fetchStates = () => {
+        fetch('./states.json', {
+            headers : { 
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            }
+        })
+        .then(function(response){
+            return response.json();
+        })
+        .then(function(myJson) {
+            setStates(myJson);
+        });
+    }
+
+    useEffect(() => {
+        fetchStates();
+    }, []);
+
+    const changeStep = (step) => {
+        setStep(step);
+    }
+
+    const onSubmit = () => {
+        history.push('/employee-list');
+    }
+
     return (
         <>
-        <div className="title">
-            <h1>HRnet</h1>
-        </div>
-        <div className="container">
+        <header className="header">
+            <div className="title">
+                <Link to='/'>
+                    HRNet
+                </Link>
+            </div>
             <Link to='/employee-list'>
                 View Current Employees
             </Link>
+        </header>
 
-            <h2>Create Employee</h2>
-            <form action="#" id="create-employee">
-                <label htmlFor="first-name">First Name</label>
-                <input type="text" id="first-name" />
 
-                <label htmlFor="last-name">Last Name</label>
-                <input type="text" id="last-name" />
+        <div className="container container__form">
+            <div className="mt-2rem"></div>
+            
+            <div className="container__form__sub">
+                <p>Create Employee</p>
 
-                <label htmlFor="date-of-birth">Date of Birth</label>
-                <input id="date-of-birth" type="text" />
+                <div className="step">
+                    <i>Step {step} / 3</i>
+                </div>
+                <span className="breadcrumb"></span>
 
-                <label htmlFor="start-date">Start Date</label>
-                <input id="start-date" type="text" />
 
-                <fieldset className="address">
-                    <legend>Address</legend>
+                <div className="mt-1rem"></div>
+                <form onSubmit={handleSubmit(onSubmit)} id="create-employee">
+                    {
+                        step && step === 1 && 
+                        <>
+                        <div className="formLabelInput">
+                            <label htmlFor="firstName">First Name *</label>
+                            <input type="text" id="firstName" placeholder="First name"
+                                {...register("firstName", {
+                                    required: true
+                                })}
+                            />
+                            {errors.firstNam ? errors.firstNam.type === "required" && <p className="bgWarning">This field is required</p> : ''}
+                        </div>
+    
+                        <div className="formLabelInput">
+                            <label htmlFor="lastName">Last Name *</label>
+                            <input type="text" id="lastName" placeholder="Last name"
+                                {...register("lastName", {
+                                    required: true
+                                })}
+                            />
+                            {errors.lastName ? errors.lastName.type === "required" && <p>This field is required</p> : ''}
+                        </div>
+    
+                        <div className="formLabelInput">
+                            <label htmlFor="dateOfBirth">Date of Birth</label>
+                            <input id="dateOfBirth" type="date" 
+                                {...register("dateOfBirth", {
+                                    valueAsDate: true
+                                })}
+                            />
+                            {errors.password ? errors.password.type === "required" && <p>This field is required</p> : ''}
+                        </div>
+    
+                        <div className="formLabelInput">
+                            <label htmlFor="startDate">Start Date</label>
+                            <input id="startDate" type="date" 
+                                {...register("startDate", {
+                                    valueAsDate: true
+                                })}
+                            />
+                            {errors.startDate ? errors.startDate.type === "required" && <p>This field is required</p> : ''}
+                        </div>
+    
+                        <div className="mt-2rem"></div>
+                        <input type="submit" onClick={() => changeStep(step + 1)} id="btnForm" value="Next"/>
+                        </>
+                    }
 
-                    <label htmlFor="street">Street</label>
-                    <input id="street" type="text" />
+                    {
+                        step && step === 2 && 
+                        <>
+                        <fieldset className="address">
+                            <legend>Address</legend>
 
-                    <label htmlFor="city">City</label>
-                    <input id="city" type="text" />
+                            <label htmlFor="street">Street</label>
+                            <input id="street" type="text" />
 
-                    <label htmlFor="state">State</label>
-                    <select name="state" id="state"></select>
+                            <label htmlFor="city">City</label>
+                            <input id="city" type="text" />
 
-                    <label htmlFor="zip-code">Zip Code</label>
-                    <input id="zip-code" type="number" />
-                </fieldset>
+                            <label htmlFor="state">State</label>
+                            <select name="state" id="state">
+                            {
+                                states && states.length > 0 && states.map((item) => <option key={item.name}>{item.name}</option>)
+                            }
+                            </select>
 
-                <label htmlFor="department">Department</label>
-                <select name="department" id="department">
-                    <option>Sales</option>
-                    <option>Marketing</option>
-                    <option>Engineering</option>
-                    <option>Human Resources</option>
-                    <option>Legal</option>
-                </select>
-            </form>
-            <button onclick="saveEmployee()">Save</button>
+                            <label htmlFor="zip-code">Zip Code</label>
+                            <input id="zip-code" type="number" />
+                        
+                            <label htmlFor="department">Department</label>
+                            <select name="department" id="department">
+                                <option>Sales</option>
+                                <option>Marketing</option>
+                                <option>Engineering</option>
+                                <option>Human Resources</option>
+                                <option>Legal</option>
+                            </select>
+                        </fieldset>
+                        
+                        <div className="mt-2rem"></div>
+
+                        <div className="flexBetween">
+                            <input type="submit" onClick={() => changeStep(step - 1)} id="btnForm" className="bgDanger" value="Previous"/>
+                            <input type="submit" onClick={() => changeStep(step + 1)} id="btnForm" className="bgSuccess" value="Envoyer"/>
+                        </div>
+                        </>
+                    }
+
+                    {
+                        step && step === 3 && 
+                        <>
+                        <div id="confirmation" className="modal">Employee Created!</div>
+                        </>
+                    }
+
+
+                </form>
+            </div>
         </div>
 
-        <div id="confirmation" className="modal">Employee Created!</div>
+        
         </>
     )
 }
