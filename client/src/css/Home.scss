@@ -71,12 +71,11 @@
                 background: #363636;
                 border: none;
                 border-radius: 2px;
+                color: white;
             }
 
             fieldset {
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
+                @extend %flexColumnCenter;
 
                 label {
                     margin-top: 1rem;
@@ -90,7 +89,6 @@
                 color: white;
                 font-weight: lighter;
             }
-
 
         }
     }
@@ -109,6 +107,10 @@
     font-size: .9rem;
 }
 
+.departement {
+    @extend %flexColumnCenter;
+}
+
 %inputSubmit {
     font-family: $font;
     font-weight: 200;
@@ -119,6 +121,12 @@
     border-radius: 3px;
     background: $blue;
     color: white;
+}
+
+%flexColumnCenter {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 #btnForm {

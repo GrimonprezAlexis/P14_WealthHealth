@@ -9,6 +9,7 @@ const Home = () => {
     const [states,setStates] = useState([]);
     const [step, setStep] = useState(1);
     const history = useHistory();
+    const [employees, setEmployees] = useState([]);
 
 
     const {
@@ -41,9 +42,25 @@ const Home = () => {
         setStep(step);
     }
 
-    const onSubmit = () => {
-        history.push('/employee-list');
+    const onSubmit = async e => {
+        const employees = JSON.parse(localStorage.getItem('employees')) || [];
+        const employeeData = {
+            firstName: e.firstName,
+            lastName: e.lastName,
+            dateOfBirth: e.dateOfBirth,
+            startDate: e.startDate,
+            department: e.department,
+            street: e.street,
+            city: e.city,
+            state: e.state,
+            zipCode: e.zipCode
+        };
+        setEmployees(employeeData);
+        setStep(3);
+        localStorage.setItem('employees', JSON.stringify(employees));
+        if(employees && employees.length > 0) history.push('/employee-list');
     }
+
 
     return (
         <>
@@ -135,29 +152,37 @@ const Home = () => {
 
                             <label htmlFor="state">State</label>
                             <select name="state" id="state">
+                                <option disabled>-- Select state --</option>
                             {
-                                states && states.length > 0 && states.map((item) => <option key={item.name}>{item.name}</option>)
+                                states && states.length > 0 && states.map((item) => <option key={item.name}>{item.name}</option>) 
+
                             }
                             </select>
 
                             <label htmlFor="zip-code">Zip Code</label>
                             <input id="zip-code" type="number" />
-                        
+                        </fieldset>
+
+                        <div className="mt-1rem"></div>
+
+                        <div className="departement">
                             <label htmlFor="department">Department</label>
                             <select name="department" id="department">
+                                <option disabled>-- Select option --</option>
                                 <option>Sales</option>
                                 <option>Marketing</option>
                                 <option>Engineering</option>
                                 <option>Human Resources</option>
                                 <option>Legal</option>
                             </select>
-                        </fieldset>
+                        </div>
+
                         
                         <div className="mt-2rem"></div>
 
                         <div className="flexBetween">
                             <input type="submit" onClick={() => changeStep(step - 1)} id="btnForm" className="bgDanger" value="Previous"/>
-                            <input type="submit" onClick={() => changeStep(step + 1)} id="btnForm" className="bgSuccess" value="Envoyer"/>
+                            <input type="submit" id="btnForm" className="bgSuccess" value="Envoyer"/>
                         </div>
                         </>
                     }
