@@ -1,0 +1,1 @@
+export const POST_EMPLOYEE = 'POST_EMPLOYEE';

@@ -1,17 +1,21 @@
 import React, { useEffect, useState } from "react";
-import { Link } from 'react-router-dom';
 import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
 import { useHistory } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 import '../css/Home.scss';
+import { POST_EMPLOYEE } from "../store/actions/constant";
+import Header from './Header';
+
+
 
 const Home = () => {
-    const [states,setStates] = useState([]);
+    const [states, setStates] = useState([]);
     const [step, setStep] = useState(1);
     const history = useHistory();
-    const [employees, setEmployees] = useState([]);
-
-
+    const dispatch = useDispatch();
+    
     const {
         register,
         handleSubmit,
@@ -43,7 +47,6 @@ const Home = () => {
     }
 
     const onSubmit = async e => {
-        const employees = JSON.parse(localStorage.getItem('employees')) || [];
         const employeeData = {
             firstName: e.firstName,
             lastName: e.lastName,
@@ -55,26 +58,22 @@ const Home = () => {
             state: e.state,
             zipCode: e.zipCode
         };
-        setEmployees(employeeData);
-        setStep(3);
-        localStorage.setItem('employees', JSON.stringify(employees));
-        if(employees && employees.length > 0) history.push('/employee-list');
-    }
 
+        dispatch({
+            type: POST_EMPLOYEE,
+            payload: employeeData
+        });
+
+        setStep(3);
+        history.push('/employee-list');
+    }
+    
+    const employeeForLocalStorage = useSelector(state => state.data.employees);
+    localStorage.setItem('employees', JSON.stringify(employeeForLocalStorage));
 
     return (
         <>
-        <header className="header">
-            <div className="title">
-                <Link to='/'>
-                    HRNet
-                </Link>
-            </div>
-            <Link to='/employee-list'>
-                View Current Employees
-            </Link>
-        </header>
-
+        <Header/>
 
         <div className="container container__form">
             <div className="mt-2rem"></div>
