@@ -1,13 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-
 import '../css/Home.scss';
 import { POST_EMPLOYEE } from "../store/actions/constant";
 import Header from './Header';
-
 
 
 const Home = () => {
@@ -64,8 +61,7 @@ const Home = () => {
             payload: employeeData
         });
 
-        setStep(3);
-        history.push('/employee-list');
+        history.push('/employee-list', {params:true});
     }
     
     const employeeForLocalStorage = useSelector(state => state.data.employees);
@@ -185,15 +181,6 @@ const Home = () => {
                         </div>
                         </>
                     }
-
-                    {
-                        step && step === 3 && 
-                        <>
-                        <div id="confirmation" className="modal">Employee Created!</div>
-                        </>
-                    }
-
-
                 </form>
             </div>
         </div>
