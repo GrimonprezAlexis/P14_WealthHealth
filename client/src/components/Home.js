@@ -5,6 +5,7 @@ import { useHistory } from 'react-router-dom';
 import '../css/Home.scss';
 import { POST_EMPLOYEE } from "../store/actions/constant";
 import Header from './Header';
+import moment from 'moment';
 
 
 const Home = () => {
@@ -47,8 +48,8 @@ const Home = () => {
         const employeeData = {
             firstName: e.firstName,
             lastName: e.lastName,
-            dateOfBirth: e.dateOfBirth,
-            startDate: e.startDate,
+            dateOfBirth: e.dateOfBirth instanceof Date && !isNaN(e.dateOfBirth) ? moment(e.dateOfBirth).format('DD/MM/YYYY') : '-',
+            startDate: e.startDate instanceof Date && !isNaN(e.startDate) ? moment(e.startDate).format('DD/MM/YYYY') : '-',
             department: e.department,
             street: e.street,
             city: e.city,
@@ -129,7 +130,7 @@ const Home = () => {
                         </div>
     
                         <div className="mt-2rem"></div>
-                        <input type="submit" onClick={() => changeStep(step + 1)} id="btnForm" value="Next"/>
+                        <input type="button" onClick={() => changeStep(step + 1)} id="btnForm" value="Next"/>
                         </>
                     }
 
@@ -140,13 +141,19 @@ const Home = () => {
                             <legend>Address</legend>
 
                             <label htmlFor="street">Street</label>
-                            <input id="street" type="text" />
+                            <input id="street" type="text" 
+                            {...register("street", {
+                                    required: false
+                            })} />
 
                             <label htmlFor="city">City</label>
-                            <input id="city" type="text" />
+                            <input id="city" type="text" 
+                            {...register("city", {
+                                    required: false
+                            })}/>
 
                             <label htmlFor="state">State</label>
-                            <select name="state" id="state">
+                            <select name="state" id="state" {...register("state")}>
                                 <option disabled>-- Select state --</option>
                             {
                                 states && states.length > 0 && states.map((item) => <option key={item.name}>{item.name}</option>) 
@@ -154,15 +161,18 @@ const Home = () => {
                             }
                             </select>
 
-                            <label htmlFor="zip-code">Zip Code</label>
-                            <input id="zip-code" type="number" />
+                            <label htmlFor="zipCode">Zip Code</label>
+                            <input id="zipCode" type="number" 
+                            {...register("zipCode", {
+                                    required: false
+                            })} />
                         </fieldset>
 
                         <div className="mt-1rem"></div>
 
                         <div className="departement">
                             <label htmlFor="department">Department</label>
-                            <select name="department" id="department">
+                            <select name="department" id="department" {...register("department")}>
                                 <option disabled>-- Select option --</option>
                                 <option>Sales</option>
                                 <option>Marketing</option>
