@@ -13,7 +13,7 @@ body {
     margin: 0;
     padding: 0;
     overflow-x: hidden;
-    background: $blue;
+    background: $blue!important;
 }
 
 @import url('https://fonts.googleapis.com/css?family=Montserrat');
@@ -25,8 +25,8 @@ body {
 }
 
 a {
-    text-decoration: none;
-    color: inherit;
+    text-decoration: none!important;
+    color: inherit!important;
 }
 
 input:focus, button:focus{
@@ -37,7 +37,7 @@ input:focus, button:focus{
 .bgSuccess { background-color: $green!important; }
 .bgWarning { background-color: $orange!important; }
 
-.flexBetween {
+.flexCenter {
     display: flex;
-    justify-content: space-between;
+    justify-content: center
 }
