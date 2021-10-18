@@ -1,15 +1,11 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { Link, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import '../css/Home.scss';
 import Header from './Header';
 import Table from './Table';
 
 const EmployeeList = () => {
-    const history = useHistory();
-    const employees = useSelector(state => state.data.employees) || localStorage.getItem('employees');
-
-    if(employees && employees.length === 0) history.push('/');
     return (
         <>
         <Header/>
