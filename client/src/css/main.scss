@@ -1,3 +1,5 @@
+@import "./variables.scss"; //Reset CSS
+@import url('https://fonts.googleapis.com/css?family=Montserrat');
 
 html {
     height: 100%; 
@@ -16,7 +18,6 @@ body {
     background: $blue!important;
 }
 
-@import url('https://fonts.googleapis.com/css?family=Montserrat');
 
 @for $i from 0 to 15 {
   .mt-#{$i}rem {
